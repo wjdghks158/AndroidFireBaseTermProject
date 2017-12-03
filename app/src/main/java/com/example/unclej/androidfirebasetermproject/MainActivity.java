@@ -36,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.d("박정환","onCreate 시작");
+        Log.d("박정환","honghong");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //actionBar.setDisplayShowTitleEnabled(false);

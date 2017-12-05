@@ -1,5 +1,7 @@
 package com.example.unclej.androidfirebasetermproject;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -23,6 +25,9 @@ import android.widget.TextView;
 import com.example.unclej.androidfirebasetermproject.fragment.FirstFragment;
 import com.example.unclej.androidfirebasetermproject.fragment.SecondFragment;
 import com.example.unclej.androidfirebasetermproject.fragment.ThirdFragment;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -35,12 +40,35 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.d("박정환","onCreate 시작");
-        Log.d("박정환","honghong");
+
+        String TAG = "PH";
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //actionBar.setDisplayShowTitleEnabled(false);
         //actionBar.setDisplayShowHomeEnabled(false);
+
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            // Name, email address, and profile photo Url
+            String name = user.getDisplayName();
+            String email = user.getEmail();
+
+            Uri photoUrl = user.getPhotoUrl();
+
+            // Check if user's email is verified
+            boolean emailVerified = user.isEmailVerified();
+
+            // The user's ID, unique to the Firebase project. Do NOT use this value to
+            // authenticate with your backend server, if you have one. Use
+            // FirebaseUser.getToken() instead.
+            String uid = user.getUid();
+
+            Log.d(TAG, "InstanceID token: " + name + "and " + email);
+        }
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        Log.d(TAG, "InstanceID token: " + token);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -64,6 +92,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("박정환","FloatingActionButton 클릭");
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent i = new Intent(getApplicationContext(), WriteActivity.class);
+                startActivity(i);
             }
         });
         Log.d("박정환","onCreate 끝");

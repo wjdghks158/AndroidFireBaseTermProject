@@ -92,7 +92,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("박정환","FloatingActionButton 클릭");
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                Intent ii = getIntent();
+                String userID = ii.getStringExtra("USERID");
                 Intent i = new Intent(getApplicationContext(), WriteActivity.class);
+                i.putExtra("USERID",userID);
                 startActivity(i);
             }
         });

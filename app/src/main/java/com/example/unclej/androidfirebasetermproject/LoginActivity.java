@@ -24,14 +24,15 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
     Button login;
+    String email;
+    String password;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        String email;
-        String password;
+
         login = (Button)findViewById(R.id.login_btn);
 
         login.setOnClickListener(new View.OnClickListener() {
@@ -41,6 +42,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         mAuth = FirebaseAuth.getInstance();
+
 
         mAuthListener = new FirebaseAuth.AuthStateListener() { // 인증 상태 리스너
             @Override
@@ -76,19 +78,25 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onButtonLogin(View v) {
-        String email = ((EditText)findViewById(R.id.id)).getText().toString();
-        String password = ((EditText)findViewById(R.id.pw)).getText().toString();
+        email = ((EditText)findViewById(R.id.id)).getText().toString();
+        password = ((EditText)findViewById(R.id.pw)).getText().toString();
         mAuth.signInWithEmailAndPassword(email, password) // Task 객체 리턴
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d("PH", "signInWithEmail:onComplete:" + task.isSuccessful());
-                        if (task.isSuccessful()) { // 로그인 성공
+                        if (!task.isSuccessful()) { // 로그인 실패
+                            Toast.makeText(LoginActivity.this, "Why!",
+                                    Toast.LENGTH_SHORT).show();
+                            Log.e(TAG, "onComplete: Failed=" + task.getException().getMessage());
+                        }
+                        else{
+
+                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                            i.putExtra("USERID",email);
+                            startActivity(i);
                             Toast.makeText(LoginActivity.this, "로긴!",
                                     Toast.LENGTH_SHORT).show();
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            startActivity(i);
-
                         }
 
                     }
@@ -99,7 +107,7 @@ public class LoginActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
+        mAuth.addAuthStateListener(mAuthListener);
     }
 
     @Override

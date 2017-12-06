@@ -89,7 +89,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Log.d("박정환","FloatingActionButton 클릭");
+
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 Intent ii = getIntent();
@@ -99,16 +99,16 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(i);
             }
         });
-        Log.d("박정환","onCreate 끝");
+
     }
 
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        Log.d("박정환","onCreateOptionsMenu 시작");
+
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_main, menu);
-        Log.d("박정환","onCreateOptionsMenu 끝");
+
         return true;
     }
 
@@ -157,11 +157,11 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
-            Log.d("박정환","onCreateView 시작 ");
+
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             TextView textView = (TextView) rootView.findViewById(R.id.section_label);
             textView.setText(getString(R.string.section_format, getArguments().getInt(ARG_SECTION_NUMBER)));
-            Log.d("박정환","onCreateView 끝 ");
+
             return rootView;
         }
     }
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            Log.d("박정환","SectionsPagerAdapter- getCount()  ");
+
             // Show 3 total pages.
             return 3;
         }

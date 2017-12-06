@@ -25,10 +25,14 @@ import com.prolificinteractive.materialcalendarview.DayViewDecorator;
 import com.prolificinteractive.materialcalendarview.DayViewFacade;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 import com.prolificinteractive.materialcalendarview.OnDateSelectedListener;
+import com.prolificinteractive.materialcalendarview.spans.DotSpan;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.EventListener;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Vector;
 import android.app.Activity;
@@ -38,10 +42,12 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.Toast;
 
 import org.w3c.dom.Text;
 
@@ -56,7 +62,9 @@ public class ThirdFragment extends Fragment {
     int totDays;
     int iYear;
     int iMonth;
-
+    Calendar calendar;
+    TextView selectDate;
+    TextView selectDated;
 
     @SuppressLint("ValidFragment")
     public ThirdFragment(int page) {
@@ -64,6 +72,8 @@ public class ThirdFragment extends Fragment {
         args.putInt(ARG_PAGE, page);
         //PageFragment fragment1 = new PageFragment(page ,name_Str, location_Str, state, PhoneNum);
         this.setArguments(args);
+
+
 
 
     }
@@ -99,22 +109,100 @@ public class ThirdFragment extends Fragment {
                 new SundayDecorator(),
                 new SaturdayDecorator(), new OnDayDecorator());
 
+        calendar.setSelectionColor(Color.RED);
+
+
+        final CalendarDay specialDay = CalendarDay.from(2017, 12, 25);
+
+        int s = specialDay.getYear();
+        int ss =  specialDay.getMonth();
+        int sss = specialDay.getDay();
+
+        String s1 = Integer.toString(s);
+        String s2 = Integer.toString(ss);
+        String s3 = Integer.toString(sss);
+
+        String newDate = s1 + s2+ s3;
+
+
+        selectDate = (TextView)view.findViewById(R.id.dated);
+        selectDated = (TextView)view.findViewById(R.id.datedd);
+        selectDate.setText(newDate);
+
+
+
+        Log.d("d", specialDay.toString() + "Ddd");
+
+
         calendar.setOnDateChangedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
+
+                Context context = getActivity();
+                int a = 1;
+
+                selectDate.setText(specialDay.toString());
+                selectDated.setText(date.toString());
+
+                if(date.toString().equals(specialDay.toString())){
+                    Toast.makeText(context, "oho!",
+                            Toast.LENGTH_SHORT).show();
+                    Log.d("PH", "honghbbbbong");
+                }
+                if(date.toString().compareTo(specialDay.toString()) == 0) {
+                    Toast.makeText(context, "party!",
+                            Toast.LENGTH_SHORT).show();
+
+                }
+                else{
+                    Toast.makeText(context, "null",
+                            Toast.LENGTH_SHORT).show();
+                }
             }
         });
-
-
-
-
-
-
 
         return view;
 
     }
 
+    protected List<CalendarDay> doInBackground(@NonNull Void... voids) {
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, -2);
+        ArrayList<CalendarDay> dates = new ArrayList<>();
+        for (int i = 0; i < 30; i++) {
+            CalendarDay day = CalendarDay.from(calendar);
+            dates.add(day);
+            calendar.add(Calendar.DATE, 5);
+        }
+
+        return dates;
+    }
+
+    public class EventDecorator implements DayViewDecorator {
+
+        private final int color;
+        private final HashSet<CalendarDay> dates;
+
+        public EventDecorator(int color, Collection<CalendarDay> dates) {
+            this.color = color;
+            this.dates = new HashSet<>(dates);
+        }
+
+        @Override
+        public boolean shouldDecorate(CalendarDay day) {
+            return dates.contains(day);
+        }
+
+        @Override
+        public void decorate(DayViewFacade view) {
+            view.addSpan(new DotSpan(5, color));
+        }
+    }
 
 
 
@@ -125,9 +213,9 @@ public class ThirdFragment extends Fragment {
 
         super.onActivityCreated(savedInstanceState);
 
-
-
     }
+
+
 
 
 }

@@ -48,6 +48,9 @@ public class MainActivity extends AppCompatActivity {
         //actionBar.setDisplayShowTitleEnabled(false);
         //actionBar.setDisplayShowHomeEnabled(false);
 
+        new AlarmHATT(getApplicationContext()).Alarm();
+
+
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             // Name, email address, and profile photo Url

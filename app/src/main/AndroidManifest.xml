@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.unclej.androidfirebasetermproject">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -12,7 +18,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -21,6 +27,7 @@
             </intent-filter>
         </activity>
 
+        <receiver android:name=".BroadcastD"/>
         <service android:name=".MyFirebaseInstanceIDService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
@@ -32,7 +39,16 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".WriteActivity"></activity>
+
+        <activity android:name=".WriteActivity" />
+        <activity android:name=".DetailActivity">
+            android:parentActivityName=".MainActivity">
+        </activity>
+
+        <activity android:name=".TempActivity"
+            android:taskAffinity=""
+            android:excludeFromRecents="true">
+        </activity>
     </application>
 
 </manifest>
